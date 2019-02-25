@@ -1,0 +1,15 @@
+{
+	"name": "cosmoz-sse",
+	"description": "Responsive tabbed pages that can render in an accordion",
+	"license": "Apache-2.0",
+	"main": "cosmoz-sse.html",
+	"dependencies": {
+		"polymer": "Polymer/polymer#^2.6.0"
+	},
+	"devDependencies": {
+		"iron-component-page": "PolymerElements/iron-component-page#^3.0.0",
+		"iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+		"web-component-tester": "^6.5.0",
+		"webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+	}
+}
