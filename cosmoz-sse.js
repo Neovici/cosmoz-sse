@@ -3,7 +3,6 @@ const SSEHandlers = {
 	text: data => data,
 	json: data => JSON.parse(data)
 };
-const { enqueueDebouncer, Debouncer } = Polymer;
 
 class CosmozSSE extends Polymer.Element {
 	static get is() {
@@ -13,21 +12,19 @@ class CosmozSSE extends Polymer.Element {
 	static get properties() {
 		return {
 			url: {
-				type: String
+				type: String,
+				observer: '_onUrlChange'
 			},
 			events: {
 				type: Array,
-				value: []
+				value: [],
+				observer: '_onEventsChange'
 			},
 			handleAs: {
 				type: String,
 				value: 'json'
 			}
 		};
-	}
-
-	static get observers() {
-		return ['_onChange(url, events)'];
 	}
 
 	constructor() {
@@ -38,15 +35,13 @@ class CosmozSSE extends Polymer.Element {
 		this._boundOnError = this._onError.bind(this);
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		this._debounceConnect();
-	}
+	connect() {
+		this._source = new EventSource(this.url);
+		this._source.addEventListener('message', this._boundOnMessage);
+		this._source.addEventListener('open', this._boundOnOpen);
+		this._source.addEventListener('error', this._boundOnError);
 
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.disconnect();
-		this._debouncer.cancel();
+		this._subscribeToEvents(this.events);
 	}
 
 	disconnect() {
@@ -54,11 +49,7 @@ class CosmozSSE extends Polymer.Element {
 			return;
 		}
 
-		if (Array.isArray(this.events)) {
-			this.events.forEach(e =>
-				this._source.removeEventListener(e, this._boundOnEvent)
-			);
-		}
+		this._unsubscribeFromEvents(this.events);
 
 		this._source.close();
 		this._source.removeEventListener('message', this._boundOnMessage);
@@ -67,36 +58,35 @@ class CosmozSSE extends Polymer.Element {
 		this._source = null;
 	}
 
-	_onChange(url) {
+	_onUrlChange(url) {
 		if (!url) {
 			return;
 		}
-		this._debounceConnect();
-	}
 
-	_debounceConnect() {
-		enqueueDebouncer(
-			this._debouncer = Debouncer.debounce(
-				this._debouncer,
-				Polymer.Async.microTask,
-				this.connect.bind(this)
-			)
-		);
-	}
-
-	connect() {
 		this.disconnect();
+		this.connect();
+	}
 
-		this._source = new EventSource(this.url);
-		this._source.addEventListener('message', this._boundOnMessage);
-		this._source.addEventListener('open', this._boundOnOpen);
-		this._source.addEventListener('error', this._boundOnError);
+	_onEventsChange(events, oldEvents) {
+		this._unsubscribeFromEvents(oldEvents);
+		this._subscribeToEvents(events);
+	}
 
-		if (!Array.isArray(this.events)) {
+	_subscribeToEvents(events) {
+		if (!this._source || !Array.isArray(events)) {
 			return;
 		}
-		this.events.forEach(e =>
-			this._source.addEventListener(e, this._boundOnEvent)
+
+		events.forEach(e => this._source.addEventListener(e, this._boundOnEvent));
+	}
+
+	_unsubscribeFromEvents(events) {
+		if (!this._source || !Array.isArray(events)) {
+			return;
+		}
+
+		events.forEach(e =>
+			this._source.removeEventListener(e, this._boundOnEvent)
 		);
 	}
 
@@ -108,6 +98,7 @@ class CosmozSSE extends Polymer.Element {
 	_onEvent(event) {
 		const { data, type } = event;
 		const handler = SSEHandlers[this.handleAs];
+
 		this.dispatchEvent(
 			new CustomEvent(type, {
 				detail: { data: handler(data) }
