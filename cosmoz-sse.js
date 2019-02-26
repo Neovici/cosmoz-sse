@@ -36,6 +36,10 @@ class CosmozSSE extends Polymer.Element {
 	}
 
 	connect() {
+		if (!this.url || this._source) {
+			return;
+		}
+
 		this._source = new EventSource(this.url);
 		this._source.addEventListener('message', this._boundOnMessage);
 		this._source.addEventListener('open', this._boundOnOpen);
@@ -58,11 +62,17 @@ class CosmozSSE extends Polymer.Element {
 		this._source = null;
 	}
 
-	_onUrlChange(url) {
-		if (!url) {
-			return;
-		}
+	connectedCallback() {
+		super.connectedCallback();
+		this.connect();
+	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.disconnect();
+	}
+
+	_onUrlChange() {
 		this.disconnect();
 		this.connect();
 	}
