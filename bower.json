@@ -1,6 +1,6 @@
 {
 	"name": "cosmoz-sse",
-	"description": "Responsive tabbed pages that can render in an accordion",
+	"description": "Subscribe to server-sent events.",
 	"license": "Apache-2.0",
 	"main": "cosmoz-sse.html",
 	"dependencies": {
