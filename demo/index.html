@@ -16,28 +16,27 @@
 		<custom-style>
 			<style is="custom-style" include="demo-pages-shared-styles">
 				#container {
-					 max-width: 800px;
-				 }
-
+					max-width: 800px;
+				}
 			</style>
 		</custom-style>
 	</head>
-	<body unresolved>
+	<body>
 		<div id="container" class="vertical-section-container centered">
 			<h3>Basic <code>cosmoz-sse</code>.</h3>
 			<demo-snippet>
 				<template>
-          <cosmoz-sse id="basic" url="http://127.0.0.1:8080/events" events='["ping"]'
-            on-open="handleOpen" on-error="handleError"
-            on-message="handleMessage" on-ping="handlePing"></cosmoz-sse>
+					<cosmoz-sse id="basic" url="http://127.0.0.1:8080/events" events='["ping"]'
+						on-open="handleOpen" on-error="handleError"
+						on-message="handleMessage" on-ping="handlePing"></cosmoz-sse>
 				</template>
 			</demo-snippet>
 		</div>
-    <script type="text/javascript">
-      basic.addEventListener('message', (event) => console.log(event.detail.data))
-      basic.addEventListener('ping', (event) => console.log(event.detail.data))
-      basic.addEventListener('open', (event) => console.log('open'))
-      basic.addEventListener('error', (event) => console.log('error'))
-    </script>
+		<script type="text/javascript">
+			basic.addEventListener('message', (event) => console.log(event.detail.data))
+			basic.addEventListener('ping', (event) => console.log(event.detail.data))
+			basic.addEventListener('open', (event) => console.log('open'))
+			basic.addEventListener('error', (event) => console.log('error'))
+		</script>
 	</body>
 </html>
