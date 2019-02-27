@@ -163,7 +163,7 @@ class CosmozSSE extends Polymer.Element {
 	 * Event handler for named events.
 	 *
 	 * Dispatches named events data as CustomEvents based on the event's type.
-	 * @param  {Event} event
+	 * @param  {Event} event The event.
 	 * @return {void}
 	 */
 	_onEvent(event) {
@@ -180,20 +180,18 @@ class CosmozSSE extends Polymer.Element {
 	/**
 	 * Event handler for `open` events.
 	 *
-	 * @param  {Event} event
 	 * @return {void}
 	 */
-	_onOpen(event) {
+	_onOpen() {
 		this.dispatchEvent(new CustomEvent('open'));
 	}
 
 	/**
 	 * Event handler for `error` events.
 	 *
-	 * @param  {Event} event
 	 * @return {void}
 	 */
-	_onError(event) {
+	_onError() {
 		this.dispatchEvent(new CustomEvent('error'));
 	}
 }
