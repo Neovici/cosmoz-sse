@@ -1,0 +1,39 @@
+{
+	"name": "cosmoz-sse",
+	"version": "1.0.0",
+	"description": "[![Build Status](https://travis-ci.com/Neovici/cosmoz-sse.svg?branch=master)](https://travis-ci.com/Neovici/cosmoz-sse)",
+	"main": "cosmoz-sse.html",
+	"directories": {
+		"test": "test"
+	},
+	"devDependencies": {
+		"eslint": "^5.9.0",
+		"eslint-plugin-html": "^5.0.0",
+		"eslint-plugin-mocha": "^5.2.0",
+		"polymer-cli": "^1.9.1",
+		"web-component-tester-istanbul": "Neovici/web-component-tester-istanbul"
+	},
+	"scripts": {
+		"start": "polymer serve -o",
+		"preinstall": "rm -f package-lock.json",
+		"postinstall": "polymer install && yarn sync-npm",
+		"lint": "eslint --cache --ext .js,.html . && polymer lint cosmoz-*.html",
+		"test": "polymer test",
+		"analyze": "polymer analyze --input cosmoz-*.html  > analysis.json",
+		"sync-npm": "npm shrinkwrap && mv npm-shrinkwrap.json package-lock.json"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/neovici/cosmoz-sse.git"
+	},
+	"keywords": [
+		"polymer",
+		"web-components"
+	],
+	"author": "",
+	"license": "Apache-2.0",
+	"bugs": {
+		"url": "https://github.com/neovici/cosmoz-sse/issues"
+	},
+	"homepage": "https://github.com/neovici/cosmoz-sse#readme"
+}
