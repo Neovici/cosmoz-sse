@@ -8,7 +8,6 @@ addons:
       - google-chrome
     packages:
       - google-chrome-stable
-
 cache:
   yarn: true
   directories:
@@ -22,10 +21,9 @@ env:
   global:
     - CC_TEST_REPORTER_ID=9798015be3ef64095a2bacb1046d8c981f8bd35e40fda757c431366e786ef566
     - SAUCE_USERNAME=nomego
-    - secure: KI7zf2naQz37iqYPDaAKfEM4UCzTHJEE1O2FEFEXktkv0b4DDR8cqqgHLoLscfmyYrsszl9vbyelFU4osspmx5YmOIKeBXzCeKNHvGyWFpr5TViKYC5kIhW2NN8chqrtM243OPey/71VdvAYL8WXs8Hutpe39s0nLuD8NDJ0I0kao1Xsatjd0j4sj1JOkw1Yq+uaqJqEGREnVG0zg5I0TeitDyAh/SCsXLm0k6e1ZasHUSkNMVBNgXNDk2g9INoZCV741h8KL9Rr93jDbJrEusofl0NW3aUGtcxEVaK06Vu2WkUtaFYRYPu8unvqxkCEef/9X6IL7LOc+AM5KxbEEGL8TDlDMasGLD2xNkfAVBYGao2KPLbpGYSWRFfNnWjwBsRzTYspUxTPskwc2A95FuDJcfoVele906+oxjc7k/mUmCBU+gRspVKWyWGZD3IhD0rXdWN8BQu81wLwvP1YUpSV0eQel8Wlij14JlMuE9nDcvl5ABsAn5uLpMwsaiFYpk2rRdYEk6auG5xfrvR3lftloHHoHb69FkzjNBCo4gQGDXyz86EQcFEf8L7KB/r46brBz5Jaio1hQ4p/47eVlNo099a72E6gfF5XNTywPMm4+r4zE7caOEw24B1xzCZbuO8El+OdbTm82aAqkMlsq6/z068VXYNVYsE4u9SyNo8=
+    - secure: gjwA5OXZqttqb3t11KKEHjaG+jS7ScwzKBpK/uVA9/yL3cAFoWTqOU8vi9g6u0O5Ijj0GmSvxTd+B4v2R9BgaCda4bhznz0DyVtkho4a4MyQmYH3mt+5Ly6eWuxgEOvY6xrpNkL/s0oAl/Ry8mT1/wskvsZUGfPs73gunWl4s9PYkNvRf620FIgxAXEy57fm8CSmsufQljxsIyzhUzMJWOU44/ZUtwoAFw1UxF1EgeqryZhf/fzJ5/HRnkqoRo39+jC0onGf6JOGIu69fZEDxVXI+0mY3ZJ3K7a/Pk7V/zvUR2tx9AWJ4gxG/YpCSXlQgltF4Of4igdIAraSaJmikgn9tMPjWNk6HMDwOt1UiR0yl2gNEI/20Yk4llAFdITA2DFjHRFKodjamD0Q2juwzjZzJw15sF/oAIla6wxvizJYeqB6iRyApcqt5Wt5IrVnHsLPuQI5ATICwnhDmoigg9sOjkA1qHySNelw+Y3EnjiOhfXMcEW13uoFBkK+JMaYTNb/A9o3z0f35f1HyLdzUE52nq2bdSsXd/1gkrBmfbZ3gjyDOwQbjOEudrV1eN6nZdJTVxVoSZcPWTcADSrzzZOEef2w48uV8EBDNBue0yCCbvFyTHjt9FyEF32z0Qbm+AVvI0zUZ+WUWWFDclqby6FQeMKTpP89ew05LvHEMDw=
     - NEO_CC_URL=https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
     - NEO_CC=$HOME/cc/cc-test-reporter
-
 before_script:
   - yarn lint
   - ([[ -e $NEO_CC ]] || curl -L $NEO_CC_URL > $NEO_CC) && chmod +x $NEO_CC
