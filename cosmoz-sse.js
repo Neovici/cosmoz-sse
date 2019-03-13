@@ -11,12 +11,15 @@ class CosmozSSE extends Polymer.Element {
 
 	static get properties() {
 		return {
+			_configuration: {
+				type: Object,
+				computed: '_computeConfiguration(withCredentials)'
+			},
 			/**
 			 * The SSE endpoint.
 			 */
 			url: {
-				type: String,
-				observer: '_onUrlChange'
+				type: String
 			},
 
 			/**
@@ -35,8 +38,21 @@ class CosmozSSE extends Polymer.Element {
 			handleAs: {
 				type: String,
 				value: 'json'
+			},
+			/**
+			 * Whether CORS should include credentials.
+			 */
+			withCredentials: {
+				type: Boolean,
+				value: false
 			}
 		};
+	}
+
+	static get observers() {
+		return [
+			'reconnect(url, _configuration)'
+		];
 	}
 
 	constructor() {
@@ -57,7 +73,7 @@ class CosmozSSE extends Polymer.Element {
 			return;
 		}
 
-		this._source = new EventSource(this.url);
+		this._source = new EventSource(this.url, this._configuration);
 		this._source.addEventListener('message', this._boundOnMessage);
 		this._source.addEventListener('open', this._boundOnOpen);
 		this._source.addEventListener('error', this._boundOnError);
@@ -94,12 +110,18 @@ class CosmozSSE extends Polymer.Element {
 		this.disconnect();
 	}
 
+	_computeConfiguration(withCredentials) {
+		return {
+			withCredentials
+		};
+	}
+
 	/**
-	 * Connects to the new URL when the property changes.
+	 * Disconnects and connects again (to handle URL or configuration changes).
 	 *
 	 * @return {void}
 	 */
-	_onUrlChange() {
+	reconnect() {
 		this.disconnect();
 		this.connect();
 	}
