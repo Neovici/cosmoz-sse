@@ -2,7 +2,7 @@
 [![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/Neovici/cosmoz-sse)
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/Neovici/cosmoz-sse)
 
-# &lt;cosmoz-tabs&gt;
+# &lt;cosmoz-sse&gt;
 
 `<cosmoz-sse>` is an element that allows subscribing to server-sent events.
 
