@@ -40,6 +40,13 @@ class CosmozSSE extends Polymer.Element {
 				value: 'json'
 			},
 			/**
+			 * Whether to require to reconnect manually
+			 */
+			manualReconnect: {
+				type: Boolean,
+				value: false
+			},
+			/**
 			 * Whether CORS should include credentials.
 			 */
 			withCredentials: {
@@ -214,6 +221,9 @@ class CosmozSSE extends Polymer.Element {
 	 * @return {void}
 	 */
 	_onError() {
+		if (this._source && !this.manualReconnect && this._source.readyState === EventSource.CLOSED) {
+			this.reconnect();
+		}
 		this.dispatchEvent(new CustomEvent('error'));
 	}
 }
