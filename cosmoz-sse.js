@@ -1,10 +1,19 @@
 // @license Copyright (C) 2019 Neovici AB - Apache 2 License
+import { PolymerElement } from '@polymer/polymer/polymer-element';
+
 const SSEHandlers = {
 	text: data => data,
 	json: data => JSON.parse(data)
 };
 
-class CosmozSSE extends Polymer.Element {
+/**
+	`<cosmoz-sse>` is an element that allows subscribing to server-sent events.
+
+	@customElement
+	@polymer
+	@demo demo/index.html
+*/
+class CosmozSSE extends PolymerElement {
 	static get is() {
 		return 'cosmoz-sse';
 	}
@@ -136,8 +145,8 @@ class CosmozSSE extends Polymer.Element {
 	/**
 	 * Subscribes to the named events when the property changes.
 	 *
-	 * @param  {String[]} events    The named events to subscribe to.
-	 * @param  {String[]} oldEvents The events previously subscribed to.
+	 * @param	 {String[]} events		The named events to subscribe to.
+	 * @param	 {String[]} oldEvents The events previously subscribed to.
 	 * @return {void}
 	 */
 	_onEventsChange(events, oldEvents) {
@@ -148,7 +157,7 @@ class CosmozSSE extends Polymer.Element {
 	/**
 	 * Subscribes to named events.
 	 *
-	 * @param  {String[]} events The named events to subscribe to.
+	 * @param	 {String[]} events The named events to subscribe to.
 	 * @return {void}
 	 */
 	_subscribeToEvents(events) {
@@ -162,7 +171,7 @@ class CosmozSSE extends Polymer.Element {
 	/**
 	 * Unsubscribes from named events.
 	 *
-	 * @param  {String[]} events The events to unsubscribe from.
+	 * @param	 {String[]} events The events to unsubscribe from.
 	 * @return {void}
 	 */
 	_unsubscribeFromEvents(events) {
@@ -180,7 +189,7 @@ class CosmozSSE extends Polymer.Element {
 	 *
 	 * Dispatches EventSource `message` events as CustomEvents.
 	 *
-	 * @param  {Event} event The `message` event.
+	 * @param	 {Event} event The `message` event.
 	 * @return {void}
 	 */
 	_onMessage(event) {
@@ -192,7 +201,7 @@ class CosmozSSE extends Polymer.Element {
 	 * Event handler for named events.
 	 *
 	 * Dispatches named events data as CustomEvents based on the event's type.
-	 * @param  {Event} event The event.
+	 * @param	 {Event} event The event.
 	 * @return {void}
 	 */
 	_onEvent(event) {

@@ -10,7 +10,7 @@
 		"istanbul": {
 			"dir": "./coverage",
 			"reporters": ["text-summary", "lcov"],
-			"include": ["cosmoz-sse.html", "cosmoz-sse.js"],
+			"include": ["**/cosmoz-*.js"],
 			"exclude": []
 		},
 		"sauce": {
