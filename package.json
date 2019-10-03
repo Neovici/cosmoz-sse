@@ -29,7 +29,7 @@
 		"test": "polymer test"
 	},
 	"dependencies": {
-		"@polymer/polymer": "^3.0.0"
+		"@polymer/polymer": "^3.3.0"
 	},
 	"devDependencies": {
 		"@neovici/eslint-config": "neovici/eslint-config#semver:^1.0.0",
