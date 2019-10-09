@@ -53,13 +53,12 @@
 			</template>
 		</test-fixture>
 		<script type="module">
-			const originalEventSource = window.EventSource;
-
-			const eventWithData = (event, data) => {
-				const e = new CustomEvent(event);
-				e.data = data;
-				return e;
-			};
+			const originalEventSource = window.EventSource,
+				eventWithData = (event, data) => {
+					const e = new CustomEvent(event);
+					e.data = data;
+					return e;
+				};
 
 			describe('cosmoz-sse', () => {
 				let eventSourceInstance;
@@ -99,8 +98,8 @@
 				});
 
 				it('fires the `open` event when the connection is established', () => {
-					const spy = sinon.spy();
-					const element = fixture('BasicTestFixture');
+					const spy = sinon.spy(),
+						element = fixture('BasicTestFixture');
 					element.addEventListener('open', spy);
 
 					eventSourceInstance.__dispatch(new CustomEvent('open'));
@@ -108,8 +107,8 @@
 				});
 
 				it('fires the `error` event when the connection fails', () => {
-					const spy = sinon.spy();
-					const element = fixture('BasicTestFixture');
+					const spy = sinon.spy(),
+						element = fixture('BasicTestFixture');
 					element.addEventListener('error', spy);
 
 					eventSourceInstance.__dispatch(new CustomEvent('error'));
@@ -117,8 +116,8 @@
 				});
 
 				it('allows subscribing to message events', () => {
-					const spy = sinon.spy();
-					const element = fixture('BasicTestFixture');
+					const spy = sinon.spy(),
+						element = fixture('BasicTestFixture');
 					element.addEventListener('message', spy);
 
 					eventSourceInstance.__dispatch(eventWithData('message', 'x1'));
@@ -138,8 +137,8 @@
 				});
 
 				it('allows subscribing to named events', () => {
-					const spy = sinon.spy();
-					const element = fixture('NamedEventsTestFixture');
+					const spy = sinon.spy(),
+						element = fixture('NamedEventsTestFixture');
 					element.addEventListener('ping', spy);
 
 					eventSourceInstance.__dispatch(
@@ -153,8 +152,8 @@
 				});
 
 				it('allows handling named events as text', () => {
-					const spy = sinon.spy();
-					const element = fixture('NamedEventsAsTextTestFixture');
+					const spy = sinon.spy(),
+						element = fixture('NamedEventsAsTextTestFixture');
 					element.addEventListener('ping', spy);
 
 					eventSourceInstance.__dispatch(eventWithData('ping', 'thisistext'));
@@ -166,9 +165,9 @@
 				});
 
 				it('closes the sse connection when removed from DOM and restores it when added back', () => {
-					const spy = sinon.spy();
-					const element = fixture('BasicTestFixture');
-					const parent = element.parentNode;
+					const spy = sinon.spy(),
+						element = fixture('BasicTestFixture'),
+						parent = element.parentNode;
 					element.addEventListener('message', spy);
 
 					eventSourceInstance.__dispatch(eventWithData('message', 'x1'));

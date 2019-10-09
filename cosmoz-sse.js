@@ -198,8 +198,8 @@ class CosmozSSE extends PolymerElement {
 	 * @return {void}
 	 */
 	_onEvent(event) {
-		const { data, type } = event;
-		const handler = SSEHandlers[this.handleAs];
+		const { data, type } = event,
+			handler = SSEHandlers[this.handleAs];
 
 		this.dispatchEvent(
 			new CustomEvent(type, {
