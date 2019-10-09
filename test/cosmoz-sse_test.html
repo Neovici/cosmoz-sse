@@ -66,7 +66,7 @@
 				beforeEach(() => {
 					// stubbing EventSource with sinon.createStubInstance does not work,
 					// so we have to manually create the stub class
-					const __events = new EventTarget();
+					const __events = document.createDocumentFragment();
 					eventSourceInstance = {
 						__dispatch: __events.dispatchEvent.bind(__events),
 						addEventListener: __events.addEventListener.bind(__events),
