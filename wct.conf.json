@@ -14,6 +14,7 @@
 			"exclude": []
 		},
 		"sauce": {
+			"jobName": "cosmoz-sse",
 			"browsers": [
 				{
 					"browserName": "microsoftedge",
