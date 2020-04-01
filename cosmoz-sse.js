@@ -1,222 +1,87 @@
-// @license Copyright (C) 2019 Neovici AB - Apache 2 License
-import { ComputingLitElement } from '@neovici/computing-lit-element';
+// @license Copyright (C) 2020 Neovici AB - Apache 2 License
+import {
+	component, useEffect, useMemo, useState
+} from 'haunted';
 
-const SSEHandlers = {
-	text: data => data,
-	json: data => JSON.parse(data)
-};
+const getJson = input => {
+		try {
+			return JSON.parse(input);
+		} catch (e) {
+			// eslint-disable-next-line no-console
+			console.error('cant parse JSON:', input);
+		}
+	},
+	SSEHandlers = {
+		text: data => data,
+		json: data => getJson(data)
+	},
 
-class CosmozSSE extends ComputingLitElement {
-	static get properties() {
-		return {
-			_configuration: {
-				type: Object,
-				computed: '_computeConfiguration(withCredentials)'
+	// eslint-disable-next-line max-lines-per-function
+	CosmozSSE = function ({
+		events, withCredentials = false, handleAs = 'json', url
+	}) {
+		const fireEvent = (type, eventInit) => {
+				this.dispatchEvent(new CustomEvent(type, eventInit));
 			},
-			/**
-			 * The SSE endpoint.
-			 */
-			url: {
-				type: String
-			},
+			configuration = useMemo(() => ({
+				withCredentials
+			}), [withCredentials]),
+			[source, setSource] = useState(null),
+			eventTypes = useMemo(() => events && getJson(events) || [], [events]),
+			onEvent = event => {
+				const handler = SSEHandlers[handleAs];
 
-			/**
-			 * The named events you wish to subscribe to.
-			 */
-			events: {
-				type: Array,
-				value: [],
-				observer: '_onEventsChange'
+				fireEvent(event.type, {
+					detail: {
+						data: handler(event.data)
+					}
+				});
 			},
+			unsubscribeFromEvents = () => {
+				if (source == null || !Array.isArray(eventTypes)) {
+					return;
+				}
+				eventTypes.forEach(eventType =>
+					source.removeEventListener(eventType, onEvent)
+				);
+			};
 
-			/**
-			 * How to parse the event data.
-			 * @type {('json'|'text')}
-			 */
-			handleAs: {
-				attribute: 'handle-as',
-				type: String
-			},
-			/**
-			 * Whether CORS should include credentials.
-			 */
-			withCredentials: {
-				type: Boolean,
-				value: false
+		useEffect(() => {
+			if (!url) {
+				return;
 			}
-		};
-	}
+			const source = new EventSource(url, configuration),
 
-	static get observers() {
-		return [
-			'reconnect(url, _configuration)'
-		];
-	}
+				onMessage = () => fireEvent('message', { detail: { data: event.data }}),
+				onOpen = () => fireEvent('open'),
+				onError = () => fireEvent('error');
 
-	constructor() {
-		super();
-		this.handleAs = 'json';
-		this._boundOnMessage = this._onMessage.bind(this);
-		this._boundOnEvent = this._onEvent.bind(this);
-		this._boundOnOpen = this._onOpen.bind(this);
-		this._boundOnError = this._onError.bind(this);
-	}
+			source.addEventListener('message', onMessage);
+			source.addEventListener('open', onOpen);
+			source.addEventListener('error', onError);
+			setSource(source);
 
-	/**
-	 * Connects to the SSE endpoint.
-	 *
-	 * @return {void}
-	 */
-	connect() {
-		if (!this.url || this._source) {
-			return;
-		}
+			return () => {
+				unsubscribeFromEvents();
+				source.close();
+				source.removeEventListener('message', onMessage);
+				source.removeEventListener('open', onOpen);
+				source.removeEventListener('error', onError);
+				setSource(null);
+			};
 
-		this._source = new EventSource(this.url, this._configuration);
-		this._source.addEventListener('message', this._boundOnMessage);
-		this._source.addEventListener('open', this._boundOnOpen);
-		this._source.addEventListener('error', this._boundOnError);
+		}, [url, configuration]);
 
-		this._subscribeToEvents(this.events);
-	}
+		useEffect(() => {
+			if (!source || !Array.isArray(eventTypes)) {
+				return;
+			}
 
-	/**
-	 * Disconnects from the SSE endpoint.
-	 *
-	 * @return {void}
-	 */
-	disconnect() {
-		if (!this._source) {
-			return;
-		}
+			eventTypes.forEach(eventType => source.addEventListener(eventType, onEvent));
+			return unsubscribeFromEvents;
+		}, [source, eventTypes]);
+	};
 
-		this._unsubscribeFromEvents(this.events);
+CosmozSSE.observedAttributes = ['events', 'handle-as', 'url', 'with-credentials'];
 
-		this._source.close();
-		this._source.removeEventListener('message', this._boundOnMessage);
-		this._source.removeEventListener('open', this._boundOnOpen);
-		this._source.removeEventListener('error', this._boundOnError);
-		this._source = null;
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		this.connect();
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.disconnect();
-	}
-
-	_computeConfiguration(withCredentials) {
-		return {
-			withCredentials
-		};
-	}
-
-	/**
-	 * Disconnects and connects again (to handle URL or configuration changes).
-	 *
-	 * @return {void}
-	 */
-	reconnect() {
-		this.disconnect();
-		this.connect();
-	}
-
-	/**
-	 * Subscribes to the named events when the property changes.
-	 *
-	 * @param	 {String[]} events		The named events to subscribe to.
-	 * @param	 {String[]} oldEvents The events previously subscribed to.
-	 * @return {void}
-	 */
-	_onEventsChange(events, oldEvents) {
-		this._unsubscribeFromEvents(oldEvents);
-		this._subscribeToEvents(events);
-	}
-
-	/**
-	 * Subscribes to named events.
-	 *
-	 * @param	 {String[]} events The named events to subscribe to.
-	 * @return {void}
-	 */
-	_subscribeToEvents(events) {
-		if (!this._source || !Array.isArray(events)) {
-			return;
-		}
-
-		events.forEach(e => this._source.addEventListener(e, this._boundOnEvent));
-	}
-
-	/**
-	 * Unsubscribes from named events.
-	 *
-	 * @param	 {String[]} events The events to unsubscribe from.
-	 * @return {void}
-	 */
-	_unsubscribeFromEvents(events) {
-		if (!this._source || !Array.isArray(events)) {
-			return;
-		}
-
-		events.forEach(e =>
-			this._source.removeEventListener(e, this._boundOnEvent)
-		);
-	}
-
-	/**
-	 * Event handler for `message` events.
-	 *
-	 * Dispatches EventSource `message` events as CustomEvents.
-	 *
-	 * @param	 {Event} event The `message` event.
-	 * @return {void}
-	 */
-	_onMessage(event) {
-		const { data } = event;
-		this.dispatchEvent(new CustomEvent('message', { detail: { data }}));
-	}
-
-	/**
-	 * Event handler for named events.
-	 *
-	 * Dispatches named events data as CustomEvents based on the event's type.
-	 * @param	 {Event} event The event.
-	 * @return {void}
-	 */
-	_onEvent(event) {
-		const {
-				data, type
-			} = event,
-			handler = SSEHandlers[this.handleAs];
-
-		this.dispatchEvent(
-			new CustomEvent(type, {
-				detail: { data: handler(data) }
-			})
-		);
-	}
-
-	/**
-	 * Event handler for `open` events.
-	 *
-	 * @return {void}
-	 */
-	_onOpen() {
-		this.dispatchEvent(new CustomEvent('open'));
-	}
-
-	/**
-	 * Event handler for `error` events.
-	 *
-	 * @return {void}
-	 */
-	_onError() {
-		this.dispatchEvent(new CustomEvent('error'));
-	}
-}
-
-customElements.define('cosmoz-sse', CosmozSSE);
+customElements.define('cosmoz-sse', component(CosmozSSE));
