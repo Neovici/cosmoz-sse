@@ -1,23 +1,12 @@
 // @license Copyright (C) 2019 Neovici AB - Apache 2 License
-import { PolymerElement } from '@polymer/polymer/polymer-element';
+import { ComputingLitElement } from '@neovici/computing-lit-element';
 
 const SSEHandlers = {
 	text: data => data,
 	json: data => JSON.parse(data)
 };
 
-/**
-	`<cosmoz-sse>` is an element that allows subscribing to server-sent events.
-
-	@customElement
-	@polymer
-	@demo demo/index.html
-*/
-class CosmozSSE extends PolymerElement {
-	static get is() {
-		return 'cosmoz-sse';
-	}
-
+class CosmozSSE extends ComputingLitElement {
 	static get properties() {
 		return {
 			_configuration: {
@@ -45,8 +34,8 @@ class CosmozSSE extends PolymerElement {
 			 * @type {('json'|'text')}
 			 */
 			handleAs: {
-				type: String,
-				value: 'json'
+				attribute: 'handle-as',
+				type: String
 			},
 			/**
 			 * Whether CORS should include credentials.
@@ -66,6 +55,7 @@ class CosmozSSE extends PolymerElement {
 
 	constructor() {
 		super();
+		this.handleAs = 'json';
 		this._boundOnMessage = this._onMessage.bind(this);
 		this._boundOnEvent = this._onEvent.bind(this);
 		this._boundOnOpen = this._onOpen.bind(this);
@@ -187,7 +177,7 @@ class CosmozSSE extends PolymerElement {
 	 */
 	_onMessage(event) {
 		const { data } = event;
-		this.dispatchEvent(new CustomEvent('message', { detail: { data } }));
+		this.dispatchEvent(new CustomEvent('message', { detail: { data }}));
 	}
 
 	/**
@@ -198,7 +188,9 @@ class CosmozSSE extends PolymerElement {
 	 * @return {void}
 	 */
 	_onEvent(event) {
-		const { data, type } = event,
+		const {
+				data, type
+			} = event,
 			handler = SSEHandlers[this.handleAs];
 
 		this.dispatchEvent(
@@ -227,4 +219,4 @@ class CosmozSSE extends PolymerElement {
 	}
 }
 
-customElements.define(CosmozSSE.is, CosmozSSE);
+customElements.define('cosmoz-sse', CosmozSSE);

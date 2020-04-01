@@ -7,20 +7,20 @@
 
 `<cosmoz-sse>` is an element that allows subscribing to server-sent events.
 
-## Install the Polymer-CLI
+## Install
 
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your element locally.
+`npm install`
 
 ## Viewing Your Element
 
+Start a web server @ port `8080` providing an event source at `/events`, then:
+
 ```
-$ polymer serve
+$ npm start
 ```
 
 ## Running Tests
 
 ```
-$ polymer test
+$ npm test
 ```
-
-Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
