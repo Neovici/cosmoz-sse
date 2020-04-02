@@ -1,5 +1,5 @@
 import {
-	expect, fixture, html
+	expect, fixture, html, nextFrame
 } from '@open-wc/testing';
 
 import sinon from 'sinon';
@@ -135,10 +135,12 @@ suite('cosmoz-sse', () => {
 		eventSourceInstance.__dispatch(eventWithData('message', 'x1'));
 
 		parent.removeChild(element);
+		await nextFrame();
 
 		eventSourceInstance.__dispatch(eventWithData('message', 'x2'));
 
 		parent.appendChild(element);
+		await nextFrame();
 
 		eventSourceInstance.__dispatch(eventWithData('message', 'x3'));
 

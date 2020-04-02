@@ -20,7 +20,8 @@ const getJson = input => {
 	CosmozSSE = function ({
 		events, withCredentials = false, handleAs = 'json', url
 	}) {
-		const fireEvent = (type, eventInit) => {
+		const isAttached = this.parentNode != null,
+			fireEvent = (type, eventInit) => {
 				this.dispatchEvent(new CustomEvent(type, eventInit));
 			},
 			configuration = useMemo(() => ({
@@ -47,7 +48,7 @@ const getJson = input => {
 			};
 
 		useEffect(() => {
-			if (!url) {
+			if (!isAttached || !url) {
 				return;
 			}
 			const source = new EventSource(url, configuration),
@@ -70,7 +71,7 @@ const getJson = input => {
 				setSource(null);
 			};
 
-		}, [url, configuration]);
+		}, [isAttached, url, configuration]);
 
 		useEffect(() => {
 			if (!source || !Array.isArray(eventTypes)) {
