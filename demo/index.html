@@ -6,11 +6,6 @@
 
 		<title>cosmoz-sse demo</title>
 
-		<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-
-		<script type="module" src="/components/@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
-		<script type="module" src="/components/@polymer/iron-demo-helpers/demo-snippet.js"></script>
-
 		<script type="module" src="../cosmoz-sse.js"></script>
 
 		<custom-style>
@@ -24,11 +19,7 @@
 	<body>
 		<div id="container" class="vertical-section-container centered">
 			<h3>Basic <code>cosmoz-sse</code>.</h3>
-			<demo-snippet>
-				<template>
-					<cosmoz-sse id="basic" url="http://127.0.0.1:8080/events" events="[&quot;ping&quot;]" on-open="handleOpen" on-error="handleError" on-message="handleMessage" on-ping="handlePing"></cosmoz-sse>
-				</template>
-			</demo-snippet>
+			<cosmoz-sse id="basic" url="http://127.0.0.1:8080/events" events="[&quot;ping&quot;]" on-open="handleOpen" on-error="handleError" on-message="handleMessage" on-ping="handlePing"></cosmoz-sse>
 		</div>
 	</body>
 </html>
