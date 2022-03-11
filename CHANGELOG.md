@@ -1,3 +1,10 @@
+## [3.1.1](https://github.com/neovici/cosmoz-sse/compare/v3.1.0...v3.1.1) (2022-03-11)
+
+
+### Bug Fixes
+
+* send event data for error events ([41ee596](https://github.com/neovici/cosmoz-sse/commit/41ee5962794b3c05f53adca6d8d0861f0dbb159e))
+
 # [3.1.0](https://github.com/neovici/cosmoz-sse/compare/v3.0.3...v3.1.0) (2020-04-06)
 
 
