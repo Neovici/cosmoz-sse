@@ -23,7 +23,7 @@ const { createDefaultConfig } = require('@open-wc/testing-karma'),
 
 module.exports = config => {
 
-	const useSauce = process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY,
+	const useSauce = false && process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY,
 		customLaunchers = useSauce ? allCustomLaunchers : baseCustomLaunchers;
 
 	if (!useSauce) {
