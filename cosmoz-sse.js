@@ -53,9 +53,9 @@ const getJson = input => {
 			}
 			const source = new EventSource(url, configuration),
 
-				onMessage = () => fireEvent('message', { detail: { data: event.data }}),
+				onMessage = event => fireEvent('message', { detail: { data: event.data }}),
 				onOpen = () => fireEvent('open'),
-				onError = () => fireEvent('error');
+				onError = event => fireEvent('error', { detail: { data: event.data }});
 
 			source.addEventListener('message', onMessage);
 			source.addEventListener('open', onOpen);
