@@ -22,12 +22,9 @@
 	},
 	"scripts": {
 		"lint": "eslint --cache --ext .js .",
-		"start": "es-dev-server",
-		"test": "karma start --coverage",
-		"test:watch": "karma start --auto-watch=true --single-run=false",
-		"test:update-snapshots": "karma start --update-snapshots",
-		"test:prune-snapshots": "karma start --prune-snapshots",
-		"test:compatibility": "karma start --compatibility all --auto-watch=true --single-run=false"
+		"start": "wds",
+		"test": "wtr --coverage",
+		"test:watch": "wtr --watch"
 	},
 	"release": {
 		"plugins": [
