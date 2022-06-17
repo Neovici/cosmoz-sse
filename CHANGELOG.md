@@ -1,3 +1,16 @@
+# [3.2.0](https://github.com/neovici/cosmoz-sse/compare/v3.1.1...v3.2.0) (2022-06-17)
+
+
+### Bug Fixes
+
+* improve test and dev ([917b1f8](https://github.com/neovici/cosmoz-sse/commit/917b1f8ae5d94a446d6df782c03019892bb39717))
+* use node lts ([376f709](https://github.com/neovici/cosmoz-sse/commit/376f70995e7cdc611c803351640784fb001e54c0))
+
+
+### Features
+
+* support haunted@^5 ([18b8bbf](https://github.com/neovici/cosmoz-sse/commit/18b8bbf72e8a7aebffc9028a3760756247d45c75))
+
 ## [3.1.1](https://github.com/neovici/cosmoz-sse/compare/v3.1.0...v3.1.1) (2022-03-11)
 
 
