@@ -1,9 +1,7 @@
 // @license Copyright (C) 2020 Neovici AB - Apache 2 License
-import {
-	component, useEffect, useMemo, useState
-} from 'haunted';
+import { component, useEffect, useMemo, useState } from '@pionjs/pion';
 
-const getJson = input => {
+const getJson = (input) => {
 		try {
 			return JSON.parse(input);
 		} catch (e) {
@@ -12,37 +10,42 @@ const getJson = input => {
 		}
 	},
 	SSEHandlers = {
-		text: data => data,
-		json: data => getJson(data)
+		text: (data) => data,
+		json: (data) => getJson(data),
 	},
-
 	// eslint-disable-next-line max-lines-per-function
 	CosmozSSE = function ({
-		events, withCredentials = false, handleAs = 'json', url
+		events,
+		withCredentials = false,
+		handleAs = 'json',
+		url,
 	}) {
 		const isAttached = this.parentNode != null,
 			fireEvent = (type, eventInit) => {
 				this.dispatchEvent(new CustomEvent(type, eventInit));
 			},
-			configuration = useMemo(() => ({
-				withCredentials
-			}), [withCredentials]),
+			configuration = useMemo(
+				() => ({
+					withCredentials,
+				}),
+				[withCredentials]
+			),
 			[source, setSource] = useState(null),
-			eventTypes = useMemo(() => events && getJson(events) || [], [events]),
-			onEvent = event => {
+			eventTypes = useMemo(() => (events && getJson(events)) || [], [events]),
+			onEvent = (event) => {
 				const handler = SSEHandlers[handleAs];
 
 				fireEvent(event.type, {
 					detail: {
-						data: handler(event.data)
-					}
+						data: handler(event.data),
+					},
 				});
 			},
 			unsubscribeFromEvents = () => {
 				if (source == null || !Array.isArray(eventTypes)) {
 					return;
 				}
-				eventTypes.forEach(eventType =>
+				eventTypes.forEach((eventType) =>
 					source.removeEventListener(eventType, onEvent)
 				);
 			};
@@ -52,10 +55,11 @@ const getJson = input => {
 				return;
 			}
 			const source = new EventSource(url, configuration),
-
-				onMessage = event => fireEvent('message', { detail: { data: event.data }}),
+				onMessage = (event) =>
+					fireEvent('message', { detail: { data: event.data } }),
 				onOpen = () => fireEvent('open'),
-				onError = event => fireEvent('error', { detail: { data: event.data }});
+				onError = (event) =>
+					fireEvent('error', { detail: { data: event.data } });
 
 			source.addEventListener('message', onMessage);
 			source.addEventListener('open', onOpen);
@@ -70,7 +74,6 @@ const getJson = input => {
 				source.removeEventListener('error', onError);
 				setSource(null);
 			};
-
 		}, [isAttached, url, configuration]);
 
 		useEffect(() => {
@@ -78,11 +81,18 @@ const getJson = input => {
 				return;
 			}
 
-			eventTypes.forEach(eventType => source.addEventListener(eventType, onEvent));
+			eventTypes.forEach((eventType) =>
+				source.addEventListener(eventType, onEvent)
+			);
 			return unsubscribeFromEvents;
 		}, [source, eventTypes]);
 	};
 
-CosmozSSE.observedAttributes = ['events', 'handle-as', 'url', 'with-credentials'];
+CosmozSSE.observedAttributes = [
+	'events',
+	'handle-as',
+	'url',
+	'with-credentials',
+];
 
 customElements.define('cosmoz-sse', component(CosmozSSE));
