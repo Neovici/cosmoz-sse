@@ -1,3 +1,15 @@
+# [4.0.0](https://github.com/neovici/cosmoz-sse/compare/v3.2.0...v4.0.0) (2024-01-13)
+
+
+### Features
+
+* update to pion ([2dd2a87](https://github.com/neovici/cosmoz-sse/commit/2dd2a877ad36a7054726a07b1575514110afe96f))
+
+
+### BREAKING CHANGES
+
+* Update to @pionjs/pion
+
 # [3.2.0](https://github.com/neovici/cosmoz-sse/compare/v3.1.1...v3.2.0) (2022-06-17)
 
 
