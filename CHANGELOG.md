@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/neovici/cosmoz-sse/compare/v4.0.0...v4.1.0) (2025-07-22)
+
+
+### Features
+
+* new automerge workflow ([cb54100](https://github.com/neovici/cosmoz-sse/commit/cb54100254cede4fbf73bbc2f9650d8adda22a05))
+
 # [4.0.0](https://github.com/neovici/cosmoz-sse/compare/v3.2.0...v4.0.0) (2024-01-13)
 
 
