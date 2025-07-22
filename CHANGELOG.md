@@ -1,3 +1,10 @@
+## [4.1.1](https://github.com/neovici/cosmoz-sse/compare/v4.1.0...v4.1.1) (2025-07-22)
+
+
+### Bug Fixes
+
+* **ci:** change automerge trigger ([61b616c](https://github.com/neovici/cosmoz-sse/commit/61b616cca878f60be63a426a404667e2cdc0f274))
+
 # [4.1.0](https://github.com/neovici/cosmoz-sse/compare/v4.0.0...v4.1.0) (2025-07-22)
 
 
