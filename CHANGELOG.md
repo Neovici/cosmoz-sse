@@ -1,3 +1,10 @@
+## [4.1.2](https://github.com/neovici/cosmoz-sse/compare/v4.1.1...v4.1.2) (2025-10-12)
+
+
+### Bug Fixes
+
+* **automerge:** the title must correspond with cfg ([fa0c9aa](https://github.com/neovici/cosmoz-sse/commit/fa0c9aa6e2cd650990ef43d7fb66070383d2c2a4))
+
 ## [4.1.1](https://github.com/neovici/cosmoz-sse/compare/v4.1.0...v4.1.1) (2025-07-22)
 
 
