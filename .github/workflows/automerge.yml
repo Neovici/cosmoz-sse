@@ -1,4 +1,4 @@
-name: Auto-Approve and Auto-Merge PRs
+name: Auto Approve and Merge PRs
 
 on:
   pull_request_target:
