@@ -21,7 +21,8 @@
 		"test": "test"
 	},
 	"scripts": {
-		"lint": "eslint --cache --ext .js .",
+		"lint": "eslint --cache .",
+    "check:duplicates": "check-duplicate-components",
 		"start": "wds",
 		"test": "wtr --coverage",
 		"test:watch": "wtr --watch"
@@ -63,11 +64,12 @@
 	"devDependencies": {
 		"@commitlint/cli": "^18.0.0",
 		"@commitlint/config-conventional": "^18.0.0",
-		"@neovici/cfg": "^1.15.2",
+		"@neovici/cfg": "^2.8.0",
 		"@open-wc/testing": "^4.0.0",
 		"@semantic-release/changelog": "^6.0.0",
 		"@semantic-release/git": "^10.0.0",
 		"husky": "^4.2.3",
+		"lint-staged": "^16.2.7",
 		"lit-html": "^2.0.0 || ^3.0.0",
 		"semantic-release": "^25.0.2",
 		"sinon": "^17.0.0"

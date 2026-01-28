@@ -4,7 +4,7 @@ import { component, useEffect, useMemo, useState } from '@pionjs/pion';
 const getJson = (input) => {
 		try {
 			return JSON.parse(input);
-		} catch (e) {
+		} catch {
 			// eslint-disable-next-line no-console
 			console.error('cant parse JSON:', input);
 		}
@@ -13,7 +13,7 @@ const getJson = (input) => {
 		text: (data) => data,
 		json: (data) => getJson(data),
 	},
-	// eslint-disable-next-line max-lines-per-function
+	 
 	CosmozSSE = function ({
 		events,
 		withCredentials = false,
