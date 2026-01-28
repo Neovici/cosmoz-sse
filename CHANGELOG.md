@@ -1,3 +1,10 @@
+## [4.1.3](https://github.com/Neovici/cosmoz-sse/compare/v4.1.2...v4.1.3) (2026-01-28)
+
+
+### Bug Fixes
+
+* repository URL case sensitivity ([de7e79b](https://github.com/Neovici/cosmoz-sse/commit/de7e79b5ca22b06d3a870eaf60d8de9024fa4a9d))
+
 ## [4.1.2](https://github.com/neovici/cosmoz-sse/compare/v4.1.1...v4.1.2) (2025-10-12)
 
 
