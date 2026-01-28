@@ -21,7 +21,7 @@
 		"test": "test"
 	},
 	"scripts": {
-		"lint": "eslint --cache --ext .js .",
+		"lint": "eslint --cache .",
     "check:duplicates": "check-duplicate-components",
 		"start": "wds",
 		"test": "wtr --coverage",
