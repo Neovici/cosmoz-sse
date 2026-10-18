@@ -2,9 +2,9 @@ import {
 	expect, fixture, html, nextFrame
 } from '@open-wc/testing';
 
-import sinon from 'sinon';
+import sinon, { spy } from 'sinon';
 
-import '../cosmoz-sse.js';
+import { setEventSourceFactory } from '../cosmoz-sse.js';
 
 const originalEventSource = window.EventSource,
 	eventWithData = (event, data) => {
@@ -49,6 +49,39 @@ suite('cosmoz-sse', () => {
 		await fixture(html`<cosmoz-sse></cosmoz-sse>`);
 
 		expect(window.EventSource).to.not.have.been.called;
+	});
+
+	test('uses a configured transport and restores the browser transport', async () => {
+		const factory = spy(() => eventSourceInstance),
+			reset = setEventSourceFactory(factory);
+		try {
+			const element = await fixture(
+					html`<cosmoz-sse
+						url="https://localhost:8000"
+						with-credentials
+					></cosmoz-sse>`,
+				),
+				onMessage = spy();
+			expect(factory).to.have.been.calledOnce;
+			expect(factory).to.have.been.calledWith('https://localhost:8000', {
+				withCredentials: true,
+			});
+			expect(window.EventSource).not.to.have.been.called;
+			element.addEventListener('message', onMessage);
+			eventSourceInstance.__dispatch(
+				eventWithData('message', 'authenticated update'),
+			);
+			expect(onMessage).to.have.been.calledWithMatch({
+				detail: { data: 'authenticated update' },
+			});
+			element.remove();
+			await nextFrame();
+			expect(eventSourceInstance.close).to.have.been.calledOnce;
+		} finally {
+			reset();
+		}
+		await fixture(basicTestFixture);
+		expect(window.EventSource).to.have.been.calledOnce;
 	});
 
 	test('fires the `open` event when the connection is established', async () => {
