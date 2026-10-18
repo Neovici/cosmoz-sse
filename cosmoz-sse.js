@@ -1,6 +1,21 @@
 // @license Copyright (C) 2020 Neovici AB - Apache 2 License
 import { component, useEffect, useMemo, useState } from '@pionjs/pion';
 
+/** @type {(url: string, options: EventSourceInit) => Pick<EventSource, 'addEventListener' | 'removeEventListener' | 'close'>} */
+let eventSourceFactory = (url, options) => new EventSource(url, options);
+
+/**
+ * Configure the event transport before mounting subscribers. Returns a reset function.
+ * @param {typeof eventSourceFactory} factory
+ */
+export const setEventSourceFactory = (factory) => {
+	const previous = eventSourceFactory;
+	eventSourceFactory = factory;
+	return () => {
+		eventSourceFactory = previous;
+	};
+};
+
 const getJson = (input) => {
 		try {
 			return JSON.parse(input);
@@ -54,7 +69,7 @@ const getJson = (input) => {
 			if (!isAttached || !url) {
 				return;
 			}
-			const source = new EventSource(url, configuration),
+			const source = eventSourceFactory(url, configuration),
 				onMessage = (event) =>
 					fireEvent('message', { detail: { data: event.data } }),
 				onOpen = () => fireEvent('open'),
