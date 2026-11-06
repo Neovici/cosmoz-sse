@@ -11,6 +11,24 @@
 
 `npm install`
 
+## Custom event transport
+
+Call `setEventSourceFactory` before mounting subscribers to use a transport that
+supports authentication headers or another runtime. The browser's `EventSource`
+remains the default. The factory receives the URL and `EventSourceInit` options,
+and returns an object with `addEventListener`, `removeEventListener`, and `close`.
+The component closes it and removes listeners when disconnected.
+
+```js
+import { setEventSourceFactory } from '@neovici/cosmoz-sse/cosmoz-sse.js';
+
+const reset = setEventSourceFactory((url, options) =>
+	createAuthenticatedSource(url, options),
+);
+// Mount subscribers after configuring the transport.
+// Call reset() before mounting new subscribers to restore the prior factory.
+```
+
 ## Viewing Your Element
 
 Start a web server @ port `8080` providing an event source at `/events`, then:
